@@ -30,6 +30,7 @@ public class HTTPParse extends Thread{
     ".indent {padding-left: 50pt;}" + CRLF +
     ".line {" + CRLF +
 	"  font-size: 12px;" + CRLF +
+	"  text-align: center;" + CRLF +
 	"  padding-top: 5px;" + CRLF +
 	"  padding-bottom: 5px;" + CRLF +
 	"  vertical-align: top;" + CRLF +
@@ -37,6 +38,7 @@ public class HTTPParse extends Thread{
     "}" + CRLF +
     ".li {" + CRLF +
 	"  font-size: 12px;" + CRLF +
+	"  text-align: center;" + CRLF +
 	"  padding-top: 3px;" + CRLF +
 	"  padding-bottom: 3px;" + CRLF +
 	"  border-bottom: 1px dotted #ffffff;" + CRLF +
@@ -64,9 +66,9 @@ public class HTTPParse extends Thread{
     "        <td align=left class=line width=100><strong># of Connections</strong></td>" + CRLF +
     "        <td align=left class=line width=100><strong>Version Byte</strong></td>" + CRLF +
     "      </tr>" + CRLF +
-    "      <tr><td class=li>STAR Keys</td><td class=li><sck></td><td class=li>&nbsp;</td></tr>" + CRLF +
-    "      <tr><td class=li>D2/WAR2 Keys</td><td class=li><d2k></td><td class=li>&nbsp;</td></tr>" + CRLF +
-    "      <tr><td class=li>WAR3 Keys</td><td class=li><w3k></td><td class=li>&nbsp;</td></tr>" + CRLF +
+    "      <tr><td class=li>STAR Keys</td><td class=li><sck></td><td class=li>-</td></tr>" + CRLF +
+    "      <tr><td class=li>D2/WAR2 Keys</td><td class=li><d2k></td><td class=li>-</td></tr>" + CRLF +
+    "      <tr><td class=li>WAR3 Keys</td><td class=li><w3k></td><td class=li>-</td></tr>" + CRLF +
     "      <tr><td class=li>STAR Checks</td><td class=li><star></td><td class=li><starvb></td></tr>" + CRLF +
     "      <tr><td class=li>W2BN Checks</td><td class=li><w2bn></td><td class=li><w2bnvb></td></tr>" + CRLF +
     "      <tr><td class=li>D2DV Checks</td><td class=li><d2dv></td><td class=li><d2dvvb></td></tr>" + CRLF +
@@ -75,7 +77,7 @@ public class HTTPParse extends Thread{
     "      <tr><td class=li>W3XP Checks</td><td class=li><war3></td><td class=li><war3vb></td></tr>" + CRLF +
     "      <tr><td class=li>DRTL Checks</td><td class=li><drtl></td><td class=li><drtlvb></td></tr>" + CRLF +
     "    </table>" + CRLF +
-    "    <table width=550 align=center callpadding=3 cellspacing=0 border=0>" + CRLF +
+    "    <table width=550 align=center cellpadding=3 cellspacing=0 border=0>" + CRLF +
     "      <tr><td align=left colspan=2><span class=subheader>Additional Information</span></td></tr>" + CRLF +
     "      <tr><td>This server requires a valid account to use: <auth></td></tr>" + CRLF +
     "      <tr><td><build></td></tr>" + CRLF +
@@ -127,6 +129,7 @@ public class HTTPParse extends Thread{
 		  }
        	  page = page.replaceAll("<count>", String.valueOf(X));
        	  page = page.replaceAll("<jbls>", ""+BNLSConnectionThread.connectionCount);
+       	  page = page.replaceAll("<admin>", "n/a");
        	  page = page.replaceAll("<sck>", ""+HashMain.STARKeysHashed);
        	  page = page.replaceAll("<d2k>", ""+HashMain.D2DVKeysHashed);
        	  page = page.replaceAll("<w3k>", ""+HashMain.WAR3KeysHashed);
@@ -309,6 +312,6 @@ public class HTTPParse extends Thread{
     String s = Integer.toHexString(value);
     if (s.length() == 1)
       s = "0" + s;
-    return s;
+    return "0x" + s.toUpperCase();
   }
 }

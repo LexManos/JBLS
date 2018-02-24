@@ -16,6 +16,8 @@ public class CheckRevisionV2 extends CheckRevisionV1
     /** These are the hashcodes for the various .mpq files. */
     private static final int hashcodes[] = { 0xE7F4CB62, 0xF6A14FFC, 0xAA5504AF, 0x871FCDC2, 0x11BF6A18, 0xC57292E6, 0x7927D27E, 0x2FEC8733 };
     
+    private static final String fastFormulas[] = { "A=A.S", "B=B.C", "C=C.A", "A=A.B" };
+    
     private static int    Version[][]     = new int[3][0x0C];
     private static Buffer    Info[][]     = new Buffer[3][0x0C];
 
@@ -53,7 +55,6 @@ public class CheckRevisionV2 extends CheckRevisionV1
             return cacheHit;
         }
         crCacheMisses++;
-        int checksum = 0;
 
         StringTokenizer tok = new StringTokenizer(versionString, " ");
 
@@ -66,25 +67,23 @@ public class CheckRevisionV2 extends CheckRevisionV1
           if(seed.toLowerCase().startsWith("c=") == true) c = Long.parseLong(seed.substring(2));
         }
         tok.nextToken();
-        if (a == 0 || b == 0 || c == 0) return null;
+
+        char op[] = new char[4];
         String formula;
-
-        formula = tok.nextToken();
-        if(formula.matches("A=A.S") == false) checksum = checkRevisionSlow(versionString, prod, plat, mpq);
-        char op1 = formula.charAt(3);
-
-        formula = tok.nextToken();
-        if(formula.matches("B=B.C") == false && checksum == 0) checksum = checkRevisionSlow(versionString, prod, plat, mpq);
-        char op2 = formula.charAt(3);
-
-        formula = tok.nextToken();
-        if(formula.matches("C=C.A") == false && checksum == 0) checksum = checkRevisionSlow(versionString, prod, plat, mpq);
-        char op3 = formula.charAt(3);
-
-        formula = tok.nextToken();
-        if(formula.matches("A=A.B") == false && checksum == 0) checksum = checkRevisionSlow(versionString, prod, plat, mpq);
-        char op4 = formula.charAt(3);
-
+        int checksum = 0;
+        
+        for (int x = 0; x < 4; x++) {
+        	if (tok.hasMoreTokens()) {
+        		formula = tok.nextToken();
+        		op[x] = formula.charAt(3);
+        		
+        		if (formula.matches(fastFormulas[x]) == false && checksum == 0) {
+        			checksum = checkRevisionSlow(versionString, prod, plat, mpq);
+        			break;
+        		}
+        	}
+        }
+        
         String[] files = getFiles(prod, plat);
 
         if(checksum == 0){
@@ -109,28 +108,28 @@ public class CheckRevisionV2 extends CheckRevisionV1
                 s |= ((data[j+2] << 16) & 0x00ff0000);
                 s |= ((data[j+3] << 24) & 0xff000000);
 
-                switch (op1) {
+                switch (op[0]) {
                     case '^': a ^= s; break;
                     case '+': a += s; break;
                     case '-': a -= s; break;
                     case '*': a *= s; break;
                     case '/': a /= s; break;
                 }
-                switch (op2) {
+                switch (op[1]) {
                     case '^': b ^= c; break;
                     case '+': b += c; break;
                     case '-': b -= c; break;
                     case '*': b *= c; break;
                     case '/': b /= c; break;
                 }
-                switch (op3) {
+                switch (op[2]) {
                     case '^': c ^= a; break;
                     case '+': c += a; break;
                     case '-': c -= a; break;
                     case '*': c *= a; break;
                     case '/': c /= a; break;
                 }
-                switch (op4) {
+                switch (op[3]) {
                     case '^': a ^= b; break;
                     case '+': a += b; break;
                     case '-': a -= b; break;
@@ -279,7 +278,7 @@ public class CheckRevisionV2 extends CheckRevisionV1
        
        StringBuffer exeInfo = new StringBuffer();
        exeInfo.append(f.getName()).append(" ");
-       exeInfo.append(PadString.padNumber(c.get(Calendar.MONTH), 2)).append("/");
+       exeInfo.append(PadString.padNumber(c.get(Calendar.MONTH) + 1, 2)).append("/");
        exeInfo.append(PadString.padNumber(c.get(Calendar.DAY_OF_MONTH), 2)).append("/");
        exeInfo.append(PadString.padNumber((c.get(Calendar.YEAR) % 100), 2)).append(" ");
        exeInfo.append(PadString.padNumber(c.get(Calendar.HOUR_OF_DAY), 2)).append(":");

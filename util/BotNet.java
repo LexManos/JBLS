@@ -47,8 +47,8 @@ public class BotNet extends Thread{
       out = bnsck.getOutputStream();
       
       OutPacketBuffer output = new OutPacketBuffer(PACKET_LOGON);
-      output.addNTString(BotID);
-      output.addNTString(HubPW);
+      output.addNTString(Constants.BotNetBotID);
+      output.addNTString(Constants.BotNetHubPW);
       send(output, out);
       
       while(true){
@@ -118,7 +118,7 @@ public class BotNet extends Thread{
         buff.addNTString("JBLSServer");
         buff.addNTString("<Not logged on>");
         buff.addDWord(-1);
-        buff.addNTString("JBLS 0a9115d19f4cf125");
+        buff.addNTString(Constants.BotNetDatabase);
         buff.addDWord(0);
         send(buff, out);
         break;

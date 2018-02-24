@@ -8,6 +8,7 @@ public class cSettings {
    	//Load the Misc
    	Constants.ArchivePath = Ini.ReadIni(file, "Main", "Archives", Constants.ArchivePath);
     Constants.DownloadPath = Ini.ReadIni(file, "Main", "DownloadPath", Constants.DownloadPath);
+    Constants.LogFilePath = Ini.ReadIni(file, "Main", "Logs", Constants.LogFilePath);
     
    	Constants.BNLSPort = Integer.parseInt(Ini.ReadIni(file, "Main", "BNLSPort", Integer.toString(Constants.BNLSPort)), 10);
    	Constants.maxThreads = Integer.parseInt(Ini.ReadIni(file, "Main", "MaxThreads", Integer.toString(Constants.maxThreads)), 10);
@@ -21,8 +22,13 @@ public class cSettings {
    	Constants.displayPacketInfo = Boolean.valueOf(Ini.ReadIni(file, "Main", "DisplayPacketInfo", Boolean.toString(Constants.displayPacketInfo)));
    	Constants.displayParseInfo = Boolean.valueOf(Ini.ReadIni(file, "Main", "DisplayParseInfo", Boolean.toString(Constants.displayParseInfo)));
    	Constants.debugInfo = Boolean.valueOf(Ini.ReadIni(file, "Main", "DisplayDebugInfo", Boolean.toString(Constants.debugInfo)));
+   	Constants.enableLogging = Boolean.valueOf(Ini.ReadIni(file, "Main", "EnableLogging", Boolean.toString(Constants.enableLogging)));
+   	Constants.logKeepDuration = Integer.parseInt(Ini.ReadIni(file, "Main", "LogFileKeepDays", Integer.toString(Constants.logKeepDuration)));
     
    	Constants.RunAdmin = Boolean.valueOf(Ini.ReadIni(file, "Admin", "EnableAdmin", Boolean.toString(Constants.RunAdmin)));
+   	Constants.BotNetBotID = Ini.ReadIni(file,  "Admin",  "BotNetBotID", Constants.BotNetBotID);
+   	Constants.BotNetHubPW = Ini.ReadIni(file,  "Admin",  "BotNetHubPW", Constants.BotNetHubPW);
+   	Constants.BotNetDatabase = Ini.ReadIni(file, "Admin", "BotNetDatabase", Constants.BotNetDatabase);
    	Constants.BotNetUsername = Ini.ReadIni(file, "Admin", "BotNetUsername", "");
    	Constants.BotNetPassword = Ini.ReadIni(file, "Admin", "BotNetPassword", "");
     Constants.BotNetServer   = Ini.ReadIni(file, "Admin", "BotNetServer", Constants.BotNetServer);

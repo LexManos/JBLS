@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import util.Constants;
@@ -33,6 +34,7 @@ public class BNLSConnectionThread extends Thread
     private Socket socket = null;
 
     private OutputStream out = null;
+    public InetAddress address = null;
 	public String IP = null;
 
     /*
@@ -114,7 +116,8 @@ public class BNLSConnectionThread extends Thread
             Destroy();
             return;
         }
-        this.IP = socket.getInetAddress().getHostAddress();
+        this.address = socket.getInetAddress();
+        this.IP = this.address.getHostAddress();
 
         // Check for IPStatistics for this guy
         if (!IpAuth.checkAuth(IP))

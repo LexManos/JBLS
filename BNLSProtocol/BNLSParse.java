@@ -783,6 +783,7 @@ public class BNLSParse{
       * This is sent to the server when receiving the status code
       * in BNLS_AUTHORIZE (0x0e).
       * (DWORD) Checksum.
+      * (DWORD) Client host IP
       * Response:
       * ---------
       * If the client sent a valid account name, but a wrong password
@@ -811,6 +812,7 @@ public class BNLSParse{
       }else
         throw new BNLSException("Incorrect Pass >>> Close Connection ");
     }
+    reply.addBytes(this.connection.address.getAddress());
 	if(Controller.stats != null) Controller.stats.onBotLogin(this.BNLSUsername, this.connection.IP);
     return reply;
   }

@@ -107,13 +107,17 @@ public class HashMain {
         default:files = CheckRevisionV1.getFiles(prod, platform); return CheckRevisionV2.checkRevision(formula, prod, platform, dll);
       }
     }catch(FileNotFoundException e){
+      String fileList = "";
+      for (int i = 0; i < files.length; i++)
+    	  fileList += files[i] + (i == (files.length - 1) ? "" : ", ");
+      
       if(ver == 3)
         Out.error("HashMain", "Hash Exception(version check): \n\r" +
               "[CheckRevision] Files Not Found/Accessible (" + Constants.prods[prod-1] + ") (" + 
-              files[0] + ", " + files[1] + ", " + files[2] + ", " + files[3] + ", " + Constants.ArchivePath + dll.replaceAll("mpq", "dll") + ")");
+              fileList + ", " + Constants.ArchivePath + dll.replaceAll("mpq", "dll") + ")");
       else
         Out.error("HashMain", "Hash Exception(version check): \n\r" +
-              "[CheckRevision] Files Not Found/Accessible (" + Constants.prods[prod-1] + ") (" + files[0] + ", " + files[1] + ", " + files[2] + ")");
+              "[CheckRevision] Files Not Found/Accessible (" + Constants.prods[prod-1] + ") (" + fileList + ")");
     }catch(IOException e){
       Out.error("HashMain", "Hash Exception(version check): [CheckRevision] IOException (" + Constants.prods[prod-1] + ")");
     }

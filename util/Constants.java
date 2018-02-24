@@ -31,9 +31,10 @@ public final class Constants{
         {"IX86/DSHR/", "Diablo_s.exe",        "Storm.dll",    "Battle.snp",   "DSHR.bin"},
         {"IX86/SSHR/", "Starcraft_s.exe",     "Storm.dll",    "Battle.snp",   "SSHR.bin"}
     };
-    public static int[] IX86verbytes = {0xD3, 0xD3, 0x4f, 0x0e, 0x0e, 0xa9, 0x1A, 0x1A, 0x2a, 0x2a, 0xa5};    
+    public static int[] IX86verbytes = {0xD6, 0xD6, 0x4f, 0x0e, 0x0e, 0xa9, 0x1C, 0x1C, 0x2a, 0x2a, 0xa5};    
     
     public static String ArchivePath = "DLLs/";
+    public static String LogFilePath = "./Logs/";
     
     public static String build="Build V3.1 Bug Fixes, SQL Stats tracking. (10-14-07)";
     //public static String build="Build V3.0 BotNet Admin, Lockdown, Legacy Clients.(07-07-07)";
@@ -47,8 +48,13 @@ public final class Constants{
     public static boolean displayPacketInfo=true;
     public static boolean displayParseInfo=false;
     public static boolean debugInfo=false;
+    public static boolean enableLogging = false;
+    public static int logKeepDuration = 7;
 
     public static boolean RunAdmin = false;
+    public static String   BotNetBotID    = "";
+    public static String   BotNetHubPW    = "";
+    public static String   BotNetDatabase = "";
     public static String   BotNetUsername = "";
     public static String   BotNetPassword = "";
     public static String   BotNetServer   = "www.valhallalegends.com";

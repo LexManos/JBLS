@@ -52,7 +52,7 @@ public class Main {
     cSettings.SaveSettings();
     
     Out.setDefaultOutputStream();
-    Out.println("Main", "Java Battle.Net Login Sever - (JBLS)  http://www.JBLS.org/");
+    Out.println("Main", "Java Battle.Net Login Server - (JBLS)  http://www.JBLS.org/");
     Out.println("Main", "Build: " + Constants.build);
 
     Out.println("Main", "JBLS Started");
@@ -69,7 +69,9 @@ public class Main {
       Controller.hServer.start();
     }
     
-    if(Constants.RunAdmin && Constants.BotNetUsername.length() > 0 && Constants.BotNetPassword.length() > 0){
+    if(Constants.RunAdmin && Constants.BotNetServer.length() > 0 && 
+    		Constants.BotNetBotID.length() > 0 && Constants.BotNetHubPW.length() > 0 &&
+    		Constants.BotNetUsername.length() > 0 && Constants.BotNetPassword.length() > 0){
       BotNet bn = new BotNet();
       bn.start();
     }   
