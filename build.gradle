@@ -1,0 +1,97 @@
+plugins {
+  id 'org.ajoberstar.grgit' version '3.1.0'
+  id 'com.github.johnrengelman.shadow' version '5.1.0'
+  id 'java'
+  id 'maven'
+  id 'maven-publish'
+  id 'eclipse'
+}
+
+
+group = 'org.jbls'
+version = gitVersion()
+targetCompatibility = sourceCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+def gitVersion() {
+    /* If you want to use Tags and automatically have it mark each version as unique based on distance to tag.
+    def desc = grgit.describe(longDescr: true).split('-') as List
+    def hash = desc.remove(desc.size() - 1)
+    def offset = desc.remove(desc.size() - 1)
+    def tag = desc.join('-')
+    def branch = grgit.branch.current().name    
+    return "${tag}.${offset}${t -> if (branch != 'master') t << '-' + branch}"
+    */
+    return "3.1-${grgit.head().abbreviatedId}"
+}
+
+jar {
+    manifest.attributes('Main-Class': 'Main')
+    manifest.attributes('Implementation-Version': project.version)
+}
+/*
+shadowJar {
+    classifier 'fatjar'
+    manifest.attributes('Main-Class': 'org.jbls.Main')
+    manifest.attributes('Implementation-Version': project.version)
+}*/
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives jar
+    //archives shadowJar
+    archives sourcesJar
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+}
+
+wrapper {
+    distributionType = Wrapper.DistributionType.BIN
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            //artifact shadowJar
+
+            pom {
+                name = 'JBLS'
+                description = 'Java Battle.net Logon Server- Java implementation of ValhallaLegend\'s BNLS protocol for interacting with Battle.net classic servers.'
+                url = 'https://github.com/Davnit/JBLS/'
+                scm {
+                    url = 'https://github.com/Davnit/JBLS/'
+                    connection = 'scm:git:git://github.com/Davnit/JBLS/.git'
+                    developerConnection = 'scm:git:git@github.com:Davnit/JBLS.git'
+                }
+                issueManagement {
+                    system = 'github'
+                    url = 'https://github.com/Davnit/JBLS/issues'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            if (project.hasProperty('mavenPassword')) {
+                credentials {
+                    username project.properties.mavenUser
+                    password project.properties.mavenPassword
+                }
+                url project.properties.mavenURL
+            } else {
+                url 'file://' + rootProject.file('repo').getAbsolutePath()
+            }
+        }
+    }
+}
